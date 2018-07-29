@@ -1,0 +1,142 @@
+#spring boot 的配置文件：springboot使用一个全局的配置文件，application.properties或application.yml ,
+#放置在 src/main/resources目录下 或类路径的/config下
+
+#直接注入配置文件 application.properties 中的属性值
+#@Value("${server.port}")
+#private String port;
+
+server:
+  port: 8182 #端口
+  connection-timeout:    #链接超时时间
+  servlet: #配置servlet容器
+    context-path: "/springbootDemo" #配置访问路径 默认/
+    session:
+      timeout: 1000 #会话有效时间 秒
+  tomcat:
+    uri-encoding: utf-8 #指定tomcat的编码格式
+    max-threads: 200 #最大线程数
+    min-spare-threads: 30 #初始化线程数
+
+spring:
+    #单数据源 无需再次Java配置
+#    datasource:
+#        #name: test
+#        # 配置当前要使用的数据源的操作类型
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        # 使用druid数据源
+#        druid:
+#          #zeroDateTimeBehavior=convertToNull作用：解决java.sql.SQLException:日期0000-00-00转换为null
+#          url: jdbc:mysql://localhost:3306/remoteservice?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+#          username: root
+#          password: 123456
+#          # 配置MySQL的驱动程序类
+#          driver-class-name: com.mysql.jdbc.Driver
+#          #监控统计拦截的filters
+#          filters: stat
+#          #配置初始化大小/最小/最大
+#          initialSize: 1
+#          minIdle: 1
+#          maxActive: 20
+#          #获取连接等待超时时间
+#          maxWait: 60000
+#          #间隔多久进行一次检测，检测需要关闭的空闲连接
+#          timeBetweenEvictionRunsMillis: 60000
+#          #一个连接在池中最小生存的时间
+#          minEvictableIdleTimeMillis: 300000
+#          validationQuery: select 'x'
+#          testWhileIdle: true
+#          testOnBorrow: false
+#          testOnReturn: false
+#          #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+#          poolPreparedStatements: true
+#          maxOpenPreparedStatements: 20
+
+    #多数据源配置 需要java配置
+    datasource:
+        # druid监控： http://localhost:8082/springbootDemo/druid/datasource.html
+        druid:
+          one:
+            type: com.alibaba.druid.pool.DruidDataSource
+            driver-class-name: com.mysql.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/remoteservice?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+            username: root
+            password: 123456
+          two:
+            type: com.alibaba.druid.pool.DruidDataSource
+            driver-class-name: com.mysql.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+            username: root
+            password: 123456
+
+    #redis
+    redis:
+          #数据库索引
+          database: 0
+          host: 127.0.0.1
+          port: 6379
+          password: 123456
+          jedis:
+            pool:
+              #最大连接数
+              max-active: 8
+              #最大阻塞等待时间(负数表示没限制)
+              max-wait: -1
+              #最大空闲
+              max-idle: 8
+              #最小空闲
+              min-idle: 0
+          #连接超时时间
+          timeout: 10000
+
+    #缓存 需要@EnableCaching开启缓存  如果实例化 CacheManager 此配置失效
+    cache:
+      cache-names: testCache #缓存名称 cache的唯一标识
+      type: redis  #使用redis作为缓存技术
+      redis:
+        key-prefix: "qbk:user:id:" #key 前缀
+        time-to-live: 10000 #过期时间
+
+    #spring-session配置
+    session:
+      store-type: redis  #使用redis作为sesion储存技术
+
+    #静态资源路径 默认多个：{"classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/"};
+#    resources: #
+#        # "classpath:/ "  代表 resources 下
+#       static-locations: "/"  #代表webapp下
+
+#    mvc:
+#      view:
+#        prefix: "/WEB-INF/jsp/"
+#        suffix: ".jsp"
+
+#日志 https://blog.csdn.net/inke88/article/details/75007649
+logging:
+  # 日志配置文件,Spring Boot默认使用classpath路径下的日志配置文件,如:logback.xml
+  # config: classpath:logback-${spring.profiles.active}.xml
+  pattern: #格式化
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [ %level ] [ %thread ] %class{1} - %M %L - %msg%xEx%n"
+  file: log/springboot-demo.log # 日志文件,绝对路径或相对路径
+  level: # 日志级别
+    com.qbk.dao: debug  # mybatis接口及映射文件包
+
+#单数据源配置，如果使用java配置 此配置失效
+mybatis:
+  #mapper.xml所在位置
+  mapper-locations: classpath:com/qbk/dao/*.xml
+  #实体类包(操作类的别名所在包)
+  type-aliases-package: com.qbk.bean
+  # mybatis配置文件所在路径
+  # config-location: classpath:mybatis/mybatis.cfg.xml
+
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+
+
+
+
+
