@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by 13624 on 2018/8/2.
- * 获取ApplicationContext
+ * 获取ApplicationContext容器
  */
 @Component
 public class MyApplicationContextAware implements ApplicationContextAware {
