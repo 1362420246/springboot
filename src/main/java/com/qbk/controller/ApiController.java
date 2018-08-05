@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -60,8 +61,9 @@ public class ApiController {
     @GetMapping("/getTest")
     public Test getTest()   {
        try{
-           Test test = null ;
-            test = testService.getTest();
+           Test test = new Test() ;
+           test.setDate(new Date());
+            //test = testService.getTest();
            log.info("test:"+test);
            log.info("日志@Slf4j 注解得使用---------------------------------");
            return test ;

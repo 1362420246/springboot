@@ -28,7 +28,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  */
 //这个类用配置redis服务器的连接，设置Session过期时间，单位：秒
 //maxInactiveIntervalInSeconds为SpringSession的过期时间（单位：秒）
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 10)
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 10)//注解包含 @Configuration 这个注解
 public class SessionConfig {
 
     @Bean

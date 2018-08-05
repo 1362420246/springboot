@@ -1,6 +1,7 @@
 package com.qbk.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by 13624 on 2018/6/20.
@@ -10,6 +11,15 @@ public class Test implements Serializable {
     private int id ;
     private  String name ;
     private  int sex ;
+    private Date date ;
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 
     public void setId(int id) {
         this.id = id;
