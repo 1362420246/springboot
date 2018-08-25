@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qbk.bean.UserBean;
+import com.qbk.utils.EhcacheUtil;
 import org.apache.catalina.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -17,7 +20,9 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //redisTemplate测试类
@@ -36,6 +41,9 @@ public class SpringbootDemoApplicationTests {
     private RedisTemplate redisTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private EhcacheUtil ehcacheUtil ;
 
     @Test
     public void redisTest() {
@@ -122,6 +130,21 @@ public class SpringbootDemoApplicationTests {
         System.out.println(str2);
         UserBean user2 = (UserBean) redisTemplate.opsForValue().get("test:t2");
         System.out.println(user2);
+
+    }
+
+    @Test
+    public  void  cacheManagerTest(){
+        UserBean user = new UserBean();//Serializable
+        user.setUserName("qu卡卡");
+
+        ehcacheUtil.put("qbk","user",user);
+
+        List list = new ArrayList();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        ehcacheUtil.put("qbk","list",list);
 
     }
 

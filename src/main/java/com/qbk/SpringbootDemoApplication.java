@@ -91,12 +91,14 @@ public class SpringbootDemoApplication {
 		RedisCacheConfiguration defaultCacheConfig=RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
 //		RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
 		//设置默认超过期时间是 秒
-		RedisCacheConfiguration configuration = defaultCacheConfig.entryTtl(Duration.ofSeconds(10));
+		RedisCacheConfiguration configuration = defaultCacheConfig.entryTtl(Duration.ofSeconds(100));
 		//初始化一个RedisCacheWriter
 		RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
 		//初始化RedisCacheManager
 		RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter, configuration);
 		return redisCacheManager;
+
+//		return RedisCacheManager.create(redisConnectionFactory);
 	}
 
 	public static void main(String[] args) {
