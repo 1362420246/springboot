@@ -5,6 +5,8 @@ import com.qbk.result.Result;
 import com.qbk.result.ResultGenerator;
 import com.qbk.service.TestService;
 import com.qbk.utils.ResultUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -13,10 +15,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,6 +28,7 @@ import java.util.Map;
 @Slf4j  //可以直接使用 log 变量输出日志
 @RestController
 @RequestMapping("/api")
+@Api(tags="测试类",value="测试类")
 public class ApiController {
 
     //org.slf4j.Logger
@@ -38,7 +38,8 @@ public class ApiController {
     private TestService testService ;
 
     //测试不被拦截接口
-    @RequestMapping("/getRequest")
+    @RequestMapping(value = "/getRequest" ,method = RequestMethod.GET)
+    @ApiOperation(value="测试", notes="测试不被拦截接口，无参数")
     public Map<String, Object> getRequest(HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
