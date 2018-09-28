@@ -1,8 +1,12 @@
 package com.qbk;
 
+import com.qbk.bean.UserBean;
 import com.qbk.poi.XWPRUNTest;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,8 +16,13 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: quboka
@@ -104,10 +113,73 @@ public class PoiTest
         }
     }
 
+    /**
+     * 对象操作
+     * import org.apache.commons.beanutils.BeanUtils;
+     */
+    @Test
+    public void beanUtils(){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("userId", 233);
+        map.put("loginName", "kaka");
+        map.put("password", "123456");
+        //把map中的数据封装到对象上。
+        UserBean user = new UserBean();
+        try {
+            BeanUtils.populate(user, map);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        System.out.println(user);
+        //copy对象
+        UserBean user2 = new UserBean();
+        try {
+            BeanUtils.copyProperties(user2,user);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        System.out.println(user2);
+        //把对象中的数据封装到map上。
+        Map<String,String> map2 = new HashMap<String, String>();
+        try {
+            map2 = BeanUtils.describe(user2);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        System.out.println(map2);
+    }
 
-
-
-
+    /**
+     * 时间转换
+     * import org.apache.commons.lang3.time.DateFormatUtils;
+     * import org.apache.commons.lang3.time.DateUtils;
+     */
+    @Test
+    public void dateTest() throws ParseException {
+        //1.将String日期转化成Date：
+         Date date = DateUtils.parseDate("2018-07-01", "yyyy-MM-dd");
+         System.out.println(date);
+         //2.将日期转换成各种format样式类型
+         String format = DateFormatUtils.format(date, "MM-dd");
+         System.out.println(format);
+        //3.月份减1
+        Date date1 = DateUtils.addMonths(date, -1);
+        System.out.println(date1);
+        //4.天数加1
+        Date date2 = DateUtils.addDays(date, 1);
+        System.out.println(date2);
+        //5. 判断是否是同一天，DateUtils的isSameDay()方法
+        boolean sameDay = DateUtils.isSameDay(date1, date2);
+        System.out.println(sameDay);
+    }
 
 
 
