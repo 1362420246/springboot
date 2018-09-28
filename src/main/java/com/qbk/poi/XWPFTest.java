@@ -15,7 +15,7 @@ import java.util.List;
  * @Description: XWPFDocument对象操控word 测试
  */
 @Component("xWPRUNTest")
-public class XWPRUNTest {
+public class XWPFTest {
 
     /*
     https://blog.csdn.net/harry_zh_wang/article/details/61938911
@@ -60,6 +60,7 @@ public class XWPRUNTest {
                 }
             }
             System.out.println(tempText.toString());
+            document.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,7 +97,7 @@ public class XWPRUNTest {
             }
 
             System.out.println(tableText.toString());
-
+            document.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,6 +124,7 @@ public class XWPRUNTest {
             FileOutputStream stream = new FileOutputStream(file);
             doucument.write(stream);
             stream.close();
+            doucument.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

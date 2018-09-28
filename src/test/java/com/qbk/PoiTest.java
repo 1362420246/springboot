@@ -1,7 +1,8 @@
 package com.qbk;
 
 import com.qbk.bean.UserBean;
-import com.qbk.poi.XWPRUNTest;
+
+import com.qbk.poi.XWPFTest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -45,7 +46,7 @@ public class PoiTest
     private static String outputUrl = "C:\\Users\\13624\\Desktop\\002.docx";
 
     @Resource
-    private XWPRUNTest xWPRUNTest;
+    private XWPFTest xWPRUNTest;
 
     @Test
     public void test(){
