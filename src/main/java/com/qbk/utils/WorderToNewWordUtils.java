@@ -178,17 +178,15 @@ public class WorderToNewWordUtils {
     }
 
     public static void main(String[] args) {
-
-
         String path = Thread.currentThread().getClass().getResource("/").getPath();
-
+        System.out.println(path);
         //模板文件地址
         String inputUrl = path + "001.docx";
 
         //新生产的模板文件
         String outputUrl = "C:\\Users\\13624\\Desktop\\002.docx";
 
-        Map<String, String> testMap = new HashMap<String, String>(4);
+        Map<String, String> testMap = new HashMap<String, String>(5);
         testMap.put("name", "卡卡");
         testMap.put("sex", "男");
         testMap.put("address", "歌华");

@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @Author: quboka
  * @Date: 2018/9/28 15:14
- * @Description:
+ * @Description: Workbook对象 操控excel测试
  */
 public class WorkbookTest {
 
@@ -61,9 +61,9 @@ public class WorkbookTest {
         //第一页第一行第一格内容
         System.out.println(stringCellValue);
         //恢复细胞的风格。
-         CellStyle cellStyle = cell.getCellStyle();
-         //获取格式字符串
-         String dataFormatString = cellStyle.getDataFormatString();
+        CellStyle cellStyle = cell.getCellStyle();
+        //获取格式字符串
+        String dataFormatString = cellStyle.getDataFormatString();
         System.out.println(dataFormatString);
         //  返回此单元格的列索引
         int columnIndex = cell.getColumnIndex();
