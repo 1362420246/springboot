@@ -34,6 +34,7 @@ import java.time.Duration;
 
 //入口类
 /**@SpringBootApplication  = @SpringBootConfiguration(@Configuration)  +  @ComponentScan +@EnableAutoConfiguration
+ * @ComponentScan ：主要就是定义扫描的路径从中找出标识了需要装配的类自动装配到spring的bean容器中
  *@EnableAutoConfiguration : 是让springboot根据类路径中的jar包依赖为当前项目进行自动配置，
  * 例如添加spring-boot-starter-web依赖，会自动添加Tomcat和sprngmvc的依赖，那么springboot会对tomcat和springmvc进行自动配置。
  * springboot会自动扫描@SpringBootApplication所在类的同级包，以及下级包里的bean，建议入口类放置的位置 groupId+arctifactID组合的包名下
