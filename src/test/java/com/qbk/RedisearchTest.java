@@ -18,6 +18,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+
 /**
  * Created by qbk on 2019/1/28.
  * redisearch测试类
@@ -60,8 +64,9 @@ public class RedisearchTest {
     public void test(){
         // 定义一个索引模式
         Schema sc = new Schema()
+                //添加字段 和字段等级
                 .addTextField("title", 5.0)
-                .addTextField("body", 1.0)
+                .addTextField("body", 10.0)
                 .addNumericField("price");
         //删除索引
         client.dropIndex();
@@ -80,7 +85,14 @@ public class RedisearchTest {
         //按照空格分词
         fields.put("title", "hello world");
         fields.put("body", "lorem ipsum");
-        fields.put("price", 1337);
+        fields.put("price", 1001);
+
+        //向索引中添加文档:
+        Map<String, Object> fields1 = new HashMap<>();
+        //按照空格分词
+        fields1.put("title", "hlorem ipsum");
+        fields1.put("body", "hello world");
+        fields1.put("price", 101);
 
         Map<String, Object> fields2 = new HashMap<>();
         //添加中文并使用中文分词器
@@ -88,8 +100,10 @@ public class RedisearchTest {
         fields2.put("body", "男");
         fields2.put("price", 23);
 
-        boolean doc1 = client.addDocument("doc1", fields);
+        boolean doc = client.addDocument("doc", fields);
+        boolean doc1 = client.addDocument("doc1", fields1);
         boolean doc2 = client.addDocument("doc2", fields2);
+        System.out.println("添加文档结果："+doc);
         System.out.println("添加文档结果："+doc1);
         System.out.println("添加文档结果："+doc2);
     }
@@ -102,7 +116,9 @@ public class RedisearchTest {
         //搜索指数:
         // 创建复杂查询
         Query q = new Query("world")
+                 //过滤条件
                 .addFilter(new Query.NumericFilter("price", 0, 2000))
+                //分页
                 .limit(0,5);
         //搜索结果
         SearchResult result = client.search(q);
@@ -126,6 +142,30 @@ public class RedisearchTest {
         System.out.println(docs);
     }
 
+
+    /**
+     * 查询分解
+     */
+    @Test
+    public void test5(){
+        Query query = new Query("hello world");
+        //数字过滤
+        Query.NumericFilter f = new Query.NumericFilter("price", 0, 1001);
+        //添加过滤
+        query.addFilter(f);
+        //分页
+        query.limit(0,100);
+        //限制字段查询
+        //query.limitFields("title");
+        //按照字段等级，匹配排序
+        query.setWithScores();
+        //搜索
+        SearchResult result = client.search(query);
+        //搜索结果文档
+        List<Document> docs = result.docs;
+        System.out.println(docs);
+    }
+
     /**
      * 中文分词器
      */
@@ -144,5 +184,8 @@ public class RedisearchTest {
         }
         return result;
     }
+
+
+
 
 }
